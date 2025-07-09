@@ -1,0 +1,151 @@
+// strip unit function
+
+@use "sass:math";
+
+@function strip-unit($number) {
+  @if type-of($number) == "number" and not unitless($number) {
+    @return math.div($number, ($number * 0 + 1));
+  }
+  @return $number;
+}
+
+// trigonometry functions
+
+$pi: 3.14159265359;
+$_precision: 10;
+
+@function pow($base, $exp) {
+  $value: $base;
+  @if $exp > 1 {
+    @for $i from 2 through $exp {
+      $value: $value * $base;
+    }
+  }
+  @if $exp < 1 {
+    @for $i from 0 through -$exp {
+      $value: math.div($value, $base);
+    }
+  }
+  @return $value;
+}
+
+@function fact($num) {
+  $fact: 1;
+  @if $num > 0 {
+    @for $i from 1 through $num {
+      $fact: $fact * $i;
+    }
+  }
+  @return $fact;
+}
+
+@function _to_unitless_rad($angle) {
+  @if unit($angle) == "deg" {
+    $angle: math.div($angle, 180deg) * $pi;
+  }
+  @if unit($angle) == "rad" {
+    $angle: math.div($angle, 1rad);
+  }
+  @return $angle;
+}
+
+@function sin($angle) {
+  $a: _to_unitless_rad($angle);
+  $sin: $a;
+  @for $n from 1 through $_precision {
+    $sin: $sin + ( math.div(pow(-1, $n), fact(2 * $n + 1)) ) * pow($a, (2 * $n + 1));
+  }
+  @return $sin;
+}
+
+@function cos($angle) {
+  $a: _to_unitless_rad($angle);
+  $cos: 1;
+  @for $n from 1 through $_precision {
+    $cos: $cos + ( math.div(pow(-1,$n), fact(2*$n)) ) * pow($a,2*$n);
+  }
+  @return $cos;
+}
+
+@function tan($angle) {
+  @return math.div(sin($angle), cos($angle));
+}
+
+// sticker functions
+
+@function sticker-height($border, $padding-y, $font-size, $line-height) {
+  $border-width-rem: math.div($border, 16px) * 1rem;
+  @return $border-width-rem * 2 + $padding-y * 2 + $font-size * $line-height;
+}
+
+@function sticker-fold-clip-path($right-side, $AE, $EG, $FN) {
+
+  $point_1_x: 100%;
+  $point_2_x: calc(#{$FN * 1rem});
+  $point_3_x: calc(#{$FN * 1rem});
+  $point_4_x: calc(#{($EG - $AE) * -1rem});
+  $point_5_x: calc(#{($EG - $AE) * -1rem});
+  $point_6_x: 100%;
+
+  @if($right-side) {
+    $point_1_x: 0;
+    $point_2_x: calc(100% - #{$FN * 1rem});
+    $point_3_x: calc(100% - #{$FN * 1rem});
+    $point_4_x: calc(100% + #{($EG - $AE) * 1rem});
+    $point_5_x: calc(100% + #{($EG - $AE) * 1rem});
+    $point_6_x: 0;
+  }
+
+  $point_1_y: 0;
+  $point_2_y: 0;
+  $point_3_y: 0;
+  $point_4_y: 100%;
+  $point_5_y: 100%;
+  $point_6_y: 100%;
+
+  @return polygon(
+                  $point_1_x $point_1_y,
+                  $point_2_x $point_2_y,
+                  $point_3_x $point_3_y,
+                  $point_4_x $point_4_y,
+                  $point_5_x $point_5_y,
+                  $point_6_x $point_6_y
+  );
+
+}
+
+@function sticker-unfold-clip-path($right-side, $AE, $EG, $FN, $AQ, $BQ) {
+
+  $point_1_x: 100%;
+  $point_2_x: calc(#{$FN * 1rem});
+  $point_3_x: calc(#{($FN - $AQ) * 1rem});
+  $point_4_x: calc(#{($EG - $AE + $AQ) * -1rem});
+  $point_5_x: calc(#{($EG - $AE) * -1rem});
+  $point_6_x: 100%;
+
+  @if($right-side) {
+    $point_1_x: 0;
+    $point_2_x: calc(100% - #{$FN * 1rem});
+    $point_3_x: calc(100% - #{($FN - $AQ) * 1rem});
+    $point_4_x: calc(100% + #{($EG - $AE + $AQ) * 1rem});
+    $point_5_x: calc(100% + #{($EG - $AE) * 1rem});
+    $point_6_x: 0;
+  }
+
+  $point_1_y: 0;
+  $point_2_y: 0;
+  $point_3_y: #{$BQ * -1rem};
+  $point_4_y: calc(100% - #{$BQ * 1rem});
+  $point_5_y: 100%;
+  $point_6_y: 100%;
+
+  @return polygon(
+                  $point_1_x $point_1_y,
+                  $point_2_x $point_2_y,
+                  $point_3_x $point_3_y,
+                  $point_4_x $point_4_y,
+                  $point_5_x $point_5_y,
+                  $point_6_x $point_6_y
+  );
+
+}

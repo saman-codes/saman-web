@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="style/index.css" />
+  <script type="text/javascript" src="bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript" src="index.js"></script>
+  <title>Math Magic by Saman</title>
+  
+</head>
+<body>
+  <!-- صفحه ورود -->
+ <div id="loginPage">
+  <div id="loginBox" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <h2 id="loginTitle">Login to the Site</h2>
+    <input
+      id="passwordInput"
+      type="password"
+      placeholder="Enter your password"
+      aria-label="Password"
+      autocomplete="off"
+    />
+    <button id="loginButton" onclick="checkLogin()">Login</button>
+    <div id="loginError" role="alert">Incorrect password</div>
+  </div>
+</div>
+
+  <!-- محتوای اصلی سایت -->
+  <div id="mainContent">
+    <button id="themeToggle" aria-label="Toggle dark/light mode">🌙 Dark Mode</button>
+    <div id="starLayer"></div>
+    <button id="musicToggle" aria-label="Play/pause background music">🎵 Play Music</button>
+    <audio id="bgMusic" loop>
+      <source src="Music/lofi.mp3" type="audio/mp3" />
+    </audio>
+
+    <div class="container mt-5 mb-5">
+      <div class="title" tabindex="0">✨ Math Magic by Saman ✨</div>
+      <div class="row gx-4 gy-4">
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <h4><i class="fas fa-plus-circle"></i> SUM</h4>
+            <input type="text" id="num1" class="form-control" placeholder="Number One" />
+            <input type="text" id="num2" class="form-control" placeholder="Number Two" />
+            <button
+              class="btn btn-primary mt-2"
+              onclick="showResult('result', parseFloat(num1.value) + parseFloat(num2.value))"
+            >
+              Calculate
+            </button>
+            <div id="result" class="result text-success">Result</div>
+          </div>
+
+          <div class="card">
+            <h4><i class="fas fa-times-circle"></i> MULTIPLY</h4>
+            <input type="text" id="num3" class="form-control" placeholder="Number One" />
+            <input type="text" id="num4" class="form-control" placeholder="Number Two" />
+            <button
+              class="btn btn-warning mt-2"
+              onclick="showResult('Multiply', parseFloat(num3.value) * parseFloat(num4.value))"
+            >
+              Calculate
+            </button>
+            <div id="Multiply" class="result text-success">Result</div>
+          </div>
+
+          <div class="card">
+            <h4><i class="fas fa-minus-circle"></i> SUBTRACT</h4>
+            <input type="text" id="num5" class="form-control" placeholder="Number One" />
+            <input type="text" id="num6" class="form-control" placeholder="Number Two" />
+            <button
+              class="btn btn-danger mt-2"
+              onclick="showResult('Subtract', parseFloat(num5.value) - parseFloat(num6.value))"
+            >
+              Calculate
+            </button>
+            <div id="Subtract" class="result text-success">Result</div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="card">
+            <h4><i class="fas fa-percent"></i> MODULUS</h4>
+            <input type="text" id="num7" class="form-control" placeholder="Number One" />
+            <input type="text" id="num8" class="form-control" placeholder="Number Two" />
+            <button
+              class="btn btn-info mt-2"
+              onclick="showResult('Modulus', parseFloat(num7.value) % parseFloat(num8.value))"
+            >
+              Calculate
+            </button>
+            <div id="Modulus" class="result text-success">Result</div>
+          </div>
+
+          <div class="card">
+            <h4><i class="fas fa-divide"></i> DIVIDE</h4>
+            <input type="text" id="num9" class="form-control" placeholder="Number One" />
+            <input type="text" id="num10" class="form-control" placeholder="Number Two" />
+            <button class="btn btn-dark mt-2" onclick="divide()">Calculate</button>
+            <div id="Divide" class="result text-success">Result</div>
+          </div>
+
+          <div class="card">
+            <h4><i class="fas fa-bolt"></i> POWER</h4>
+            <input type="text" id="num11" class="form-control" placeholder="Number One" />
+            <input type="text" id="num12" class="form-control" placeholder="Number Two" />
+            <button
+              class="btn btn-secondary mt-2"
+              onclick="showResult('power', parseFloat(num11.value) ** parseFloat(num12.value))"
+            >
+              Calculate
+            </button>
+            <div id="power" class="result text-success">Result</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-4 mb-5">
+        <button class="btn btn-outline-danger px-4" onclick="resetAll()">🔄 Reset All</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+const musicToggle = document.getElementById('musicToggle');
+const bgMusic = document.getElementById('bgMusic');
+
+let attempts = 0; // تعداد تلاش‌ها
+const maxAttempts = 3; // حداکثر تلاش مجاز
+const lockTime = 30; // مدت زمان قفل به ثانیه
+
+function showResult(id, value) {
+  const res = document.getElementById(id);
+  if (isNaN(value)) {
+    res.textContent = 'Please enter a number';
+  } else {
+    res.textContent = value;
+  }
+  res.classList.add('show');
+}
+
+function divide() {
+  const n1 = parseFloat(document.getElementById('num9').value);
+  const n2 = parseFloat(document.getElementById('num10').value);
+  const divRes = document.getElementById('Divide');
+  if (isNaN(n1) || isNaN(n2)) {
+    divRes.textContent = 'Please enter a number';
+  } else if (n2 === 0) {
+    divRes.textContent = 'Cannot divide by zero';
+  } else {
+    divRes.textContent = n1 / n2;
+  }
+  divRes.classList.add('show');
+}
+
+function resetAll() {
+  document.querySelectorAll('input[type="text"]').forEach((inp) => (inp.value = ''));
+  document.querySelectorAll('.result').forEach((res) => {
+    res.textContent = 'Result';
+    res.classList.remove('show');
+  });
+}
+
+// Dark/light mode toggle
+const starLayer = document.getElementById('starLayer');
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+
+  if (document.body.classList.contains('dark-mode')) {
+    themeToggle.textContent = '☀️ Light Mode';
+    starLayer.style.display = 'block';  // نمایش ستاره‌ها
+  } else {
+    themeToggle.textContent = '🌙 Dark Mode';
+    starLayer.style.display = 'none';   // مخفی کردن ستاره‌ها
+  }
+});
+
+// Music toggle and autoplay
+window.addEventListener('load', () => {
+  bgMusic.volume = 0.3;
+  bgMusic.play().catch(() => {
+    // Autoplay ممکنه مسدود بشه؛ کاربر میتونه با دکمه دستی موزیک رو روشن کنه
+  });
+  musicToggle.textContent = '⏸️ Stop Music';
+});
+
+musicToggle.addEventListener('click', () => {
+  if (bgMusic.paused) {
+    bgMusic.play();
+    musicToggle.textContent = '⏸️ Stop Music';
+  } else {
+    bgMusic.pause();
+    musicToggle.textContent = '🎵 Play Music';
+  }
+});
+
+// چک کردن رمز ورود با قفل تایمر پس از چند تلاش اشتباه
+function checkLogin() {
+  const pass = document.getElementById("passwordInput").value;
+  const errorDiv = document.getElementById("loginError");
+  const loginButton = document.getElementById("loginButton");
+
+  if (pass === "1") {  // رمز صحیح
+    document.getElementById("loginPage").style.display = "none";  // مخفی کردن صفحه ورود
+    document.getElementById("mainContent").style.display = "block";  // نمایش سایت اصلی
+    errorDiv.style.display = "none";
+    attempts = 0; // ریست تعداد تلاش‌ها
+  } else {
+    attempts++;
+    if (attempts >= maxAttempts) {
+      loginButton.disabled = true; // غیرفعال کردن دکمه ورود
+      let timeLeft = lockTime;
+      errorDiv.textContent = `Too many attempts! Please wait ${timeLeft} seconds.`;
+      errorDiv.style.display = "block";
+
+      const timer = setInterval(() => {
+        timeLeft--;
+        if (timeLeft > 0) {
+          errorDiv.textContent = `Too many attempts! Please wait ${timeLeft} seconds.`;
+        } else {
+          clearInterval(timer);
+          errorDiv.style.display = "none";
+          loginButton.disabled = false;
+          errorDiv.textContent = "Incorrect password";
+          attempts = 0;
+        }
+      }, 1000);
+    } else {
+      errorDiv.textContent = "Incorrect password";
+      errorDiv.style.display = "block";
+    }
+  }
+}
+
+  </script>
+</body>
+</html>

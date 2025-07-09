@@ -1,0 +1,268 @@
+body {
+      background: linear-gradient(135deg, #f3f4f6, #e2e8f0);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      transition: background 0.5s ease, color 0.5s ease;
+      color: #333;
+    }
+  /* صفحه ورود روی کل صفحه */
+    #loginPage {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #eee;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 9999;
+    }
+    #loginBox {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      max-width: 350px;
+      width: 90%;
+      text-align: center;
+    }
+    #loginBox h2 {
+      margin-bottom: 20px;
+    }
+    #passwordInput {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: 1.5px solid #ccc;
+      font-size: 1rem;
+    }
+    #loginButton {
+      width: 100%;
+      padding: 10px;
+      background: #8258fa;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    #loginButton:hover {
+      background-color: #684eda;
+    }
+    #loginError {
+      color: red;
+      margin-top: 10px;
+      display: none;
+      user-select: none;
+    }
+
+    /* برای مخفی کردن محتوای اصلی تا ورود */
+    #mainContent {
+      display: none;
+    }
+    .dark-mode {
+      background: #121421;
+      color: #e0e0f0;
+    }
+	#starLayer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* اجازه کلیک روی لایه ستاره‌ها رو نمی‌ده */
+  z-index: 500; /* زیر دکمه‌ها و محتوای اصلی باشه */
+  display: none; /* اول مخفیه */
+  background: transparent;
+}
+
+/* ستاره‌های کوچک */
+#starLayer::before, #starLayer::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  box-shadow:
+    50px 80px white,
+    120px 150px white,
+    200px 40px white,
+    350px 120px white,
+    400px 200px white,
+    450px 80px white,
+    600px 130px white,
+    700px 60px white;
+  animation: twinkle 3s infinite alternate ease-in-out;
+}
+
+#starLayer::after {
+  width: 3px;
+  height: 3px;
+  box-shadow:
+    30px 30px white,
+    80px 180px white,
+    180px 70px white,
+    250px 200px white,
+    320px 140px white,
+    420px 190px white,
+    520px 60px white,
+    620px 130px white;
+  animation-delay: 1.5s;
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+/**/
+    .title {
+	  padding-top:50px;
+      text-align: center;
+      font-size: 2.2rem;
+      margin-bottom: 40px;
+      font-weight: 700;
+      color: #444;
+      user-select: none;
+    }
+    .dark-mode .title {
+      color: #c9b4ff;
+    }
+    .card {
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      transition: background-color 0.4s ease, color 0.4s ease;
+      animation: fadeInUp 0.7s ease forwards;
+      background-color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 30px;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+      transition: 0.3s;
+    }
+    .dark-mode .card {
+      background-color: rgba(30, 30, 50, 0.9);
+      color: #e0e0f0;
+    }
+    h4 {
+      user-select: none;
+    }
+    .btn {
+      width: 100%;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 10px;
+    }
+    input.form-control {
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: 1.8px solid #ccc;
+      transition: border-color 0.3s ease;
+    }
+    input.form-control:focus {
+      border-color: #8258fa;
+      box-shadow: 0 0 8px #b392f0;
+      outline: none;
+    }
+    .result {
+      font-size: 1.3rem;
+      margin-top: 8px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      font-weight: 600;
+      user-select: none;
+      color: #2e7d32;
+      min-height: 1.5em; /*اینجه همون جای  خالی است که متن نویشه میشه باز */
+    }
+    .result.show {
+      opacity: 1;
+    }
+#themeToggle,
+#musicToggle {
+  position: fixed;
+  left: 20px;
+  top: 20px;
+  z-index: 9999; 
+  border-radius: 30px;
+  font-size: 14px;
+  padding: 10px 18px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  user-select: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: #8258fa;
+  color: white;
+  border: none;
+  margin-bottom: 10px;
+  width: 140px;
+  text-align: center;
+}
+
+    #musicToggle {
+      top: 70px;
+      background-color: #6c63ff;
+    }
+    #themeToggle {
+      top: 20px;
+    }
+    #themeToggle:hover {
+      background-color: #684eda;
+    }
+    #musicToggle:hover {
+      background-color: #5750d8;
+    }
+    .dark-mode #themeToggle {
+      background-color: #b9a4ff;
+      color: #221f3b;
+    }
+    .dark-mode #musicToggle {
+      background-color: #a291ff;
+      color: #221f3b;
+    }
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+	
+	
+	@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+.shake {
+  animation: shake 0.4s;
+}
+
+
+@media (max-width: 576px) {
+  .title {
+    font-size: 1.5rem;
+    padding-top:70px;
+  }
+  .btn {
+    font-size: 0.95rem;
+    padding: 8px;
+  }
+  input.form-control {
+    font-size: 0.95rem;
+  }
+}
